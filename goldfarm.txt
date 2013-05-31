@@ -1,5 +1,10 @@
 Gold farming sim
 ----------------
+names: 
+* world of sweatshopcraft
+* loot ninja
+* need before greed
+* greed before need
 
 Sweatshop phase:
 start homeless, taken in by a farming sweatshop
