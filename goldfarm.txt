@@ -5,6 +5,7 @@ names:
 * loot ninja
 * need before greed
 * greed before need
+* goldfarmville
 
 Sweatshop phase:
 start homeless, taken in by a farming sweatshop
