@@ -2,12 +2,12 @@ import pygame
 import random
 import math
 
-from agents import Agent
-from particle import Particles
-import items
-from ui import Textbox,PopupText
-from aicontroller import AIController
-import interactions
+from .agents import Agent
+from .particle import Particles
+from . import items
+from .ui import Textbox,PopupText
+from .aicontroller import AIController
+from . import interactions
 import re
 
 class Player(Agent):
@@ -72,7 +72,7 @@ class Player(Agent):
             path = self.update_path(path)
         return path
     def update_path(self,path):
-        print "update path",len(path),path
+        print("update path",len(path),path)
         if not path:
             return None
         map = self.get_map()
@@ -109,14 +109,14 @@ class Player(Agent):
                 rest = path[i+1:]
                 if not rest:
                     return None
-                print i
-                print path
+                print(i)
+                print(path)
                 if i>0:
                     path = path2+path[i+1:]
                 else:
                     path = path[i+1:]
-                print path
-                print "uh oh. no path found, try to path to the next starting point"
+                print(path)
+                print("uh oh. no path found, try to path to the next starting point")
                 return self.update_path(path)
         map.add_entity(self)
         return path2
@@ -209,7 +209,7 @@ class Player(Agent):
         responses = re.findall("\{.*?\}",text)
         for r in responses:
             text = text.replace(r,"")
-        print responses
+        print(responses)
         self.texter.to_say = text
         if responses:
             self.texter.responses = {"char":self,"subjects":subjects,"responses":[x[1:-1].split(",") for x in responses]}
@@ -220,8 +220,8 @@ class Player(Agent):
             if in_topic:
                 self.topics.add(t)
             in_topic = not in_topic
-            print self.topics
-        print self.texter,self.texter.to_say,self.texter.said,self.texter.pos
+            print(self.topics)
+        print(self.texter,self.texter.to_say,self.texter.said,self.texter.pos)
     def respond(self,responses,subjects):
         """Allow player to choose something to say to the subjects"""
         options = []
@@ -266,7 +266,7 @@ class Player(Agent):
             p[1]+=self.facing[1]*8
             col = self.world.collide_point(self,p,"frobme")
             if col:
-                print col,dir(col)
+                print(col,dir(col))
                 if hasattr(col,"frobme"):
                     col.frobme(self)
                 return

@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from agents import Agent
+from .agents import Agent
 
 class Particle(Agent):
     def init(self):

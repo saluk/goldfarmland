@@ -2,9 +2,9 @@ import os,random,math
 
 import pygame
 
-from world import World
+from .world import World
 
-from agents import Text,Agent
+from .agents import Text,Agent
 
 import json
 
@@ -25,8 +25,8 @@ class GameWorld(World):
                 self.sprites.extend(o.get_sprites())
     def input(self,controller):
         if controller.restart:
-            import game
-            import world
+            from . import game
+            from . import world
             reload(world)
             reload(game)
             self.engine.world = game.make_world(self.engine)

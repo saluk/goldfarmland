@@ -21,9 +21,9 @@
 
 import sys,os
 import time
-import engine
-import controller
-import game
+from . import engine
+from . import controller
+from . import game
 if sys.platform=="win32":
     os.environ['SDL_VIDEODRIVER']='windib'
 
@@ -63,4 +63,4 @@ def run():
             engine.draw_screen()
             engine.next_screen = engine.screen_refresh
         controller.input()
-    print "quit"
+    print("quit")

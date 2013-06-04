@@ -62,7 +62,7 @@ class CharacterInteractable(Interactable):
                 return
             actor.menu.setup(options,label="Ask "+parent.name+" about:")
     def action_dialog(self,actor,dialog):
-        print "try dialog",dialog
+        print("try dialog",dialog)
         parent = self.agent
         matched_quest = None
         quest = ""
@@ -77,15 +77,15 @@ class CharacterInteractable(Interactable):
         moods = {"happy":"e_h","normal":"e_n","mad":"e_m"}
         match = [dialog,parent.name,moods[parent.mood],quest]
         while match:
-            print match
+            print(match)
             ms = " ".join(match)
-            print ms
-            print cd
+            print(ms)
+            print(cd)
             d = cd.get(ms,None)
             if not d:
                 match = match[:-1]
                 continue
-            print "found match:",d
+            print("found match:",d)
             parent.say_many(d,actor,[parent])
             if matched_quest:
                 matched_quest.post(actor,dialog)

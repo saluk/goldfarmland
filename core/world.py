@@ -7,7 +7,7 @@ import pygame
 import random
 import os
 import time
-from agents import Agent
+from .agents import Agent
 
 class World(object):
     def __init__(self,engine):
