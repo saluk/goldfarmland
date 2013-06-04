@@ -31,6 +31,8 @@ class World(object):
         self.sprites = []
         for o in self.objects:
             o.update(self)
+        self.objects = [o for o in self.objects if not o.kill]
+        for o in self.objects:
             if o.visible:
                 self.sprites.extend(o.get_sprites())
         self.sprites.sort(key=lambda sprite:(sprite.layer,sprite.pos[1]))

@@ -48,7 +48,8 @@ try:
     import android
 except:
     #This is really only for py2exe anyway, which I'm not using right now
-    import urllib.request, urllib.error, urllib.parse,webbrowser,__future__,pygame,pygame.font,zipfile,traceback
+    pass
+    #mport urllib2,webbrowser,__future__,pygame,pygame.font,zipfile,traceback
 
 if android:
     android.init()
@@ -80,6 +81,10 @@ class Logger(object):
         self.terminal.write(message)
         self.log.write(message)
         self.now.write(message)
+
+    def flush(self):
+        self.log.flush()
+        self.now.flush()
 #~ import gc
 #~ gc.enable()
 #~ gc.set_debug(gc.DEBUG_LEAK)
@@ -94,5 +99,5 @@ except:
         raise
     type, value, sys.last_traceback = sys.exc_info()
     lines = traceback.format_exception(type, value,sys.last_traceback)
-    print("".join(lines))
+    print ("".join(lines))
     show_popup("Oh no, there's been an error:\nMore detailed info available in lastlog.txt."+"".join(lines))
