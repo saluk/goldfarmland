@@ -4,7 +4,7 @@ import json
 itemdat = json.loads(open("dat/items.json").read())
 item_defs = itemdat["items"]
 
-from agents import Agent
+from .agents import Agent
 
 class Item(Agent):
     names = ["apple","bananna","handkerchief","gloves","axe","sword","bucket","ring","bracelet","knife","coins","note","booklet","glass","leaflet"]
@@ -41,7 +41,7 @@ class Inventory(Agent):
         if name:
             item = self.get(name)
         if item:
-            print self.names()
+            print(self.names())
             self.items.remove(item)
             return item
     def add(self,item=None,name=None):

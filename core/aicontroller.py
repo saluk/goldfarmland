@@ -1,5 +1,5 @@
 import random
-import m
+from . import m
 
 class AIController(object):
     def __init__(self,agent):
@@ -48,7 +48,7 @@ class AIController(object):
             return
         a = self.agent
         if getattr(a,"attractors",{}):
-            print a.attractors
+            print(a.attractors)
             chosen = a.attractors["default"]
             possible = self.search_map(name=chosen.get("name",None),provides=chosen.get("provides",None))
             if possible:
@@ -56,13 +56,13 @@ class AIController(object):
                 bored = self.boredom_map.get(o.name,0)
                 bored+=random.uniform(0.1,0.9)
                 self.boredom_map[o.name] = bored
-                print "found object"
+                print("found object")
                 for d in [(-1,0),(1,0),(0,-1),(0,1)]:
                     p = [o.pos[0]+d[0]*32,o.pos[1]+d[1]*32]
                     points = [a.pos,p]
                     path = a.update_path(points)
                     if path:
-                        print "found path to object"
+                        print("found path to object")
                         self.following_points = path
                         self.state = "follow_path"
                         self.next_states = ["wait"]
@@ -70,9 +70,9 @@ class AIController(object):
                         return
         if hasattr(a,"paths"):
             self.active_path = self.select_path(a,a.paths)
-            print "chose path",self.active_path
+            print("chose path",self.active_path)
             self.following_points = a.get_path(self.active_path,True)
-            print "following_points",self.following_points
+            print("following_points",self.following_points)
             self.state = "follow_path"
             self.next_states = ["wait"]
             self.wait_time = 30*10
@@ -121,7 +121,7 @@ class AIController(object):
                     return
             #Not moving, recalculate path
             if self.last_moved>30:
-                print "find path for",self.following_points
+                print("find path for",self.following_points)
                 path = a.update_path(self.following_points[1:])
                 if path:
                     self.following_points = path

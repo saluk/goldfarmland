@@ -2,7 +2,7 @@ import math,random
 
 import pygame
 
-from agents import Agent,Text
+from .agents import Agent,Text
 
 class Radial(Agent):
     def init(self):
