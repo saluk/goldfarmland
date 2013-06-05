@@ -2,25 +2,14 @@ import os,random,math
 
 import pygame
 
-from .world import World
+from .world import World,ClickWorld,ManagerWorld
 
 from .agents import Text,Agent
 from .ui import Button
+from . import systems
+from .system_computer import ComputerWorld
 
 import json
-
-class ClickWorld(World):
-    def input(self,controller):
-        if controller.mbdown:
-            x = controller.mpos[0]+self.offset[0]
-            y = controller.mpos[1]+self.offset[1]
-            for o in reversed(self.sprites):
-                r = o.rect()
-                if hasattr(o,"event_click") and x>=r.left and x<=r.right and y>=r.top and y<=r.bottom:
-                    o.event_click()
-                    return
-        if controller.quit:
-            self.engine.running = False
 
 class LogoWorld(ClickWorld):
     def start(self):
@@ -29,11 +18,15 @@ class LogoWorld(ClickWorld):
         self.engine.world = GameWorld(self.engine)
 
 
-class GameWorld(ClickWorld):
-    pass
+class GameWorld(ManagerWorld):
+    def __init__(self,engine):
+        super().__init__(engine)
+        self.computer = systems.Computer(speed=10,memory=10,harddrive=10)
+        self.use_computer(self.computer)
+    def use_computer(self,computer):
+        self.set_world(ComputerWorld(self.engine,computer))
 
 def make_world(engine):
     """This makes the starting world"""
-    w1 = LogoWorld(engine)
-    w = GameWorld(engine)
-    return w1
+    w = LogoWorld(engine)
+    return w
