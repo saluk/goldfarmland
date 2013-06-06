@@ -52,9 +52,7 @@ class Controller:
                     continue
             if e.type==pygame.VIDEORESIZE:
                 w,h = e.w,e.h
-                engine.swidth = w
-                engine.sheight = h
-                engine.make_screen()
+                engine.make_screen(w,h)
                 continue
             if e.type == pygame.QUIT:
                 self.engine.stop()

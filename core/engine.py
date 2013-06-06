@@ -95,13 +95,19 @@ class Engine:
             return
         sound = pygame.mixer.Sound("sounds/"+sound+".wav")
         sound.play()
-    def make_screen(self):
+    def make_screen(self,w=None,h=None):
+        if w:
+            self.swidth = w
+        if h:
+            self.sheight = h
         flags = pygame.RESIZABLE|pygame.FULLSCREEN*self.fullscreen
         pygame.display.set_icon(pygame.image.load("art/icons/ico.png"))
         self.window = pygame.display.set_mode([self.swidth,self.sheight],flags)
         self.surface = pygame.Surface([self.iwidth,self.iheight]).convert()
         self.blank = self.surface.convert()
         self.blank.fill([0,0,110])
+        self.sfw = float(self.swidth)/float(self.iwidth)
+        self.sfh = float(self.sheight)/float(self.iheight)
     def get_mouse_pos(self):
         x,y = pygame.mouse.get_pos()
         x=int(x*(self.iwidth/float(self.swidth)))
