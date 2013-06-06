@@ -24,7 +24,7 @@ class GameWorld(ManagerWorld):
         self.computer = systems.Computer(speed=10,memory=10,harddrive=10)
         self.use_computer(self.computer)
     def use_computer(self,computer):
-        self.set_world(ComputerWorld(self.engine,computer))
+        self.set_world(ComputerWorld(self,self.engine,computer))
 
 def make_world(engine):
     """This makes the starting world"""

@@ -85,8 +85,8 @@ class PopupText(Text):
             self.kill = 1
 
 class Button(Agent):
-    def __init__(self,graphic,target=None,func=None):
-        super().__init__(graphic)
+    def __init__(self,graphic,target=None,func=None,pos=[0,0]):
+        super().__init__(graphic,pos)
         if not target:
             target = self
         self.target = target
@@ -97,3 +97,30 @@ class Button(Agent):
         func()
     def click(self):
         print(id(self),"clicked")
+        
+class TextButton(Button):
+    def __init__(self,box=None,graphic=None,box_color=[0,0,0],box_border=[200,200,200],target=None,func=None,text="Button",pos=[0,0]):
+        super().__init__(graphic,target,func,pos)
+        self.box = box
+        self.box_color = box_color
+        self.box_border = box_border
+        self.text = Text()
+        self.text.set_text(text)
+    def draw(self,engine,offset=[0,0]):
+        if self.art:
+            super().draw(engine,offset)
+        elif self.box:
+            self.box.left = self.pos[0]-offset[0]
+            self.box.top = self.pos[1]-offset[1]
+            pygame.draw.rect(engine.surface,self.box_border,self.box)
+            box2 = self.box.inflate(-2,-2)
+            pygame.draw.rect(engine.surface,self.box_color,box2)
+        self.text.pos = [self.pos[0]+4,self.pos[1]+4]
+        self.text.draw(engine,offset)
+    def rect(self):
+        if self.art:
+            return super().rect()
+        elif self.box:
+            self.box.left = self.pos[0]
+            self.box.top = self.pos[1]
+            return self.box

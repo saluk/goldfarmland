@@ -23,6 +23,8 @@ class World(object):
         o.world = self
     def remove(self,o):
         self.objects.remove(o)
+    def clear(self):
+        self.objects[:] = []
     def start(self):
         """Code that runs when a world starts, base world
         doesn't need to do anything"""
@@ -79,3 +81,6 @@ class ManagerWorld(World):
         self.worlds.append(world)
     def end_current_world(self):
         del self.worlds[0]
+    def end_world(self,world):
+        if world in self.worlds:
+            self.worlds.remove(world)
