@@ -6,6 +6,7 @@ names:
 * need before greed
 * greed before need
 * goldfarmville
+(*) goldfarmland
 
 Sweatshop phase:
 start homeless, taken in by a farming sweatshop
@@ -37,11 +38,56 @@ types of farming:
  * gold farming - fight easy mobs over and over
  * power leveling - find best areas to level up
  * exploits
+        dupe items
+        glitch bosses
+        mob always gives good loot
  * hacking accounts
-read forums to find exploits or tips
-play game - what does this mean exactly
-adjust computer software
-buy copies of games
-talk to coworkers
-talk to boss
-shop for apartment
+
+MODES:
+at computer
+    purchase games
+    install games
+    patch games
+    read internet
+        find exploit
+        find guides and tips
+        download ui addons
+        download bots
+        get info about hot items, economy
+        see when new games are coming out and gague interest
+        find clients
+        find vpns
+    email
+        communicate with current clients
+        communicate with game devs if banned
+        communicate if lose vpn privelages
+    can toggle minimized games
+        minimized botter
+        minimized item shop
+    start game -> switch to game mode
+playing a game
+    after logging into account...
+    see game being played
+        can change area
+        field:
+            money + loot
+            rare items
+            monsters dying or player dying
+            experience + leveling
+            doing a quest
+            fighting bosses
+        town:
+            equip character
+            collect quests
+            spam site
+            sell items
+                put on auction
+                player store
+                player to player
+            get party
+office (life events?)
+manage apartment
+    sleep: refill energy
+    eat: refill health
+    watch tv: refill mood
+    purchase: furniture, makes other actions better; restock food
