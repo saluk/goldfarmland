@@ -38,7 +38,21 @@ games = []
 for n in GAME_NAMES:
     company = companies[random.choice(COMPANY_NAMES)]
     games.append(Game(n,company,random.randint(5,10),random.randint(5,10),random.randint(5,10)))
-    
+
+class Zone(SystemStruct):
+    def __init__(self,name,game,tileset):
+        super().__init__(name)
+        self.game = game
+        self.tileset = tileset
+class FieldZone(Zone):
+    def __init__(self,name,game,tileset,mobs=[]):
+        super().__init__(name,game,tileset)
+        self.mobs = mobs
+class TownZone(Zone):
+    def __init__(self,name,game,tileset,stores=[]):
+        super().__init__(name,game,tileset)
+        self.stores = stores
+
 class World(SystemStruct):
     def __init__(self,name,game):
         super().__init__(name)

@@ -52,6 +52,10 @@ class Agent(object):
         self.graphics = memory[art]
         self.surface = self.graphics
         return self
+    def subsurface(self,rect):
+        if not self.graphics and self.art:
+            self.load()
+        self.surface = self.graphics.subsurface(rect)
     def update(self,world):
         if self.rotation_on_rot and self.surface:
             ang = math.atan2(-self.rot[1],self.rot[0])*180.0/math.pi

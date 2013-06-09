@@ -6,6 +6,8 @@ from .world import World,ClickWorld
 from .ui import Button,TextButton
 from .agents import Agent
 
+from . import system_mmo
+
 class ComputerWorld(ClickWorld):
     def __init__(self,manager,engine,computer):
         super().__init__(engine)
@@ -39,3 +41,4 @@ class ComputerWorld(ClickWorld):
         self.build_screen()
     def action_launch(self,game):
         print("Starting game "+game.name)
+        self.manager.set_world(system_mmo.MMOWorld(self.manager,self.engine,game))
