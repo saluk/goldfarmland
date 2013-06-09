@@ -1,3 +1,5 @@
+import random
+
 class SystemStruct(object):
     def __init__(self,name):
         self.name = name
@@ -9,6 +11,9 @@ ACCOUNT_NAMES=["FredAstaire","GingerRogers","MrWolfe","HappyGilmore"]
 
 class Company(SystemStruct):
     pass
+companies = {}
+for n in COMPANY_NAMES:
+    companies[n] = Company(n)
 
 class Game(SystemStruct):
     def __init__(self,name,company,speed,memory,harddrive):
@@ -29,6 +34,10 @@ class Game(SystemStruct):
         assert account in self.accounts
         char = Character(name,account,self.worlds[world_name])
         return char
+games = []
+for n in GAME_NAMES:
+    company = companies[random.choice(COMPANY_NAMES)]
+    games.append(Game(n,company,random.randint(5,10),random.randint(5,10),random.randint(5,10)))
     
 class World(SystemStruct):
     def __init__(self,name,game):

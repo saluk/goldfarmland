@@ -13,7 +13,7 @@ import json
 
 class LogoWorld(ClickWorld):
     def start(self):
-        self.add(Button("art/icons/logo.png",self,"nextworld"))
+        self.add(Button("art/icons/logo.png",{"func":self.nextworld}))
     def nextworld(self):
         self.engine.world = GameWorld(self.engine)
 

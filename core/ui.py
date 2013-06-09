@@ -83,24 +83,34 @@ class PopupText(Text):
         self.pos[1]-=self.amt
         if self.timeout<0:
             self.kill = 1
+            
+def do_call(caller):
+    attr = ()
+    kwattr = {}
+    for k in caller:
+        if k not in ["attr","target","getattr","func"]:
+            kwattr[k] = caller[k]
+    if "attr" in caller:
+        attr = caller["attr"]
+    if "target" in caller and "getattr" in caller:
+        getattr(caller["target"],caller["getattr"])(*attr,**kwattr)
+    elif "func" in caller:
+        caller["func"](*attr,**kwattr)
 
 class Button(Agent):
-    def __init__(self,graphic,target=None,func=None,pos=[0,0]):
+    def __init__(self,graphic,caller=None,pos=[0,0]):
         super().__init__(graphic,pos)
-        if not target:
-            target = self
-        self.target = target
-        self.func = func
-        print(self.target,self.func)
+        if not caller:
+            caller = {"target":self,"getattr":"click"}
+        self.caller = caller
     def event_click(self):
-        func = getattr(self.target,self.func)
-        func()
+        do_call(self.caller)
     def click(self):
         print(id(self),"clicked")
         
 class TextButton(Button):
-    def __init__(self,box=None,graphic=None,box_color=[0,0,0],box_border=[200,200,200],target=None,func=None,text="Button",pos=[0,0]):
-        super().__init__(graphic,target,func,pos)
+    def __init__(self,box=None,graphic=None,box_color=[0,0,0],box_border=[200,200,200],caller=None,text="Button",pos=[0,0]):
+        super().__init__(graphic,caller,pos)
         self.box = box
         self.box_color = box_color
         self.box_border = box_border
