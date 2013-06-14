@@ -2,6 +2,7 @@ import random
 import pygame
 
 from . import systems
+from . import m
 from .world import World,ClickWorld
 from .ui import Button,TextButton
 from .agents import Agent
@@ -70,14 +71,9 @@ class MMOWorld(ClickWorld):
         return fights
     def move_encounters(self):
         for enc in self.encounters:
-            if enc.pos[0]<self.pc.pos[0]:
-                enc.pos[0]+=1
-            elif enc.pos[0]>self.pc.pos[0]+32:
-                enc.pos[0]-=1
-            if enc.pos[1]<self.pc.pos[1]:
-                enc.pos[1]+=1
-            elif enc.pos[1]>self.pc.pos[1]+32:
-                enc.pos[1]-=1
+            dx,dy = m.toward(enc,self.pc)
+            enc.pos[0]+=dx
+            enc.pos[1]+=dy
     def do_fights(self,fights):
         pass
     def update(self):
