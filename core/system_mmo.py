@@ -1,5 +1,6 @@
 import random
 import pygame
+import json
 
 from . import systems
 from . import m
@@ -7,11 +8,13 @@ from .world import World,ClickWorld
 from .ui import Button,TextButton
 from .agents import Agent
 
+mob_defs = json.load(open("dat/mobs.json"))
+
 class Char(Agent):
-    def __init__(self,index=[[0,0],[8,8]]):
+    def __init__(self,sprite_name):
         super().__init__("art/sprites/char.png")
         self.chars = [self]
-        self.index = index
+        self.index = mob_defs["sprites"][sprite_name]["rect"]
         self.hp = 10
         self.power = 1      #hp per loss per attack
     def load(self):
@@ -89,15 +92,15 @@ class MMOWorld(ClickWorld):
         self.manager = manager
         self.game = game
         self.zone = systems.Zone("Test Zone",self.game,"grass")
-        self.pc = Char()
+        self.pc = Char("elf_archer")
         self.pc.name = "Hurtzalot"
         self.pc.pos = [5*32,4*32]
         self.encounters = []
         self.add(self.pc)
-        self.add_encounter(Encounter(0, [ [[56,56],[8,8]] , [[56,56],[8,8]]  ,  [[56,56],[8,8]] ]))
-        self.add_encounter(Encounter(1, [ [[56,56],[8,8]] , [[56,56],[8,8]]  ,  [[56,56],[8,8]] ]))
-        self.add_encounter(Encounter(2, [ [[56,56],[8,8]] , [[56,56],[8,8]]  ,  [[56,56],[8,8]] ]))
-        self.add_encounter(Encounter(3, [ [[56,56],[8,8]] , [[56,56],[8,8]]  ,  [[56,56],[8,8]] ]))
+        self.add_encounter(Encounter(0, [ "ghost_blue" ]))
+        self.add_encounter(Encounter(1, [ "ghost_blue" ]))
+        self.add_encounter(Encounter(2, [ "ghost_blue"  ]))
+        self.add_encounter(Encounter(3, [ "ghost_blue"  ]))
     def add_encounter(self,encounter):
         self.add(encounter)
         self.encounters.append(encounter)
