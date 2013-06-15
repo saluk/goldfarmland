@@ -91,3 +91,12 @@ manage apartment
     eat: refill health
     watch tv: refill mood
     purchase: furniture, makes other actions better; restock food
+    
+Fighting:
+    mobs stream in from sides of screen
+    if a mob hits you, it initiates a fight betweent he player and that mob
+    one fight at a time
+    every tick switch turns from player to mob
+    then do some damage
+    when player dies, return to town
+    when mob dies return to mobs streaming

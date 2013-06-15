@@ -41,4 +41,4 @@ class ComputerWorld(ClickWorld):
         self.build_screen()
     def action_launch(self,game):
         print("Starting game "+game.name)
-        self.manager.set_world(system_mmo.MMOWorld(self.manager,self.engine,game))
+        self.manager.set_world(system_mmo.MMOWorld(self.computer,self.manager,self.engine,game))
