@@ -147,7 +147,7 @@ class MMOWorld(ClickWorld):
             self.remove_encounter(fights[0])
         elif fights[0].fight.winner:
             print("PLAYER DIED")
-            self.manager.use_computer(self.computer)
+            self.manager.end_current_world()
     def update(self):
         super().update()
         fights = self.check_fights()

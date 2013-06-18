@@ -32,7 +32,7 @@ class ComputerWorld(ClickWorld):
         self.add(TextButton(box=pygame.Rect([0,0],[40,20]),text="Install",pos=[200,180],caller={"func":self.action_install}))
     def action_quit(self):
         print("ending world")
-        self.manager.end_world(self)
+        self.manager.end_current_world()
     def action_install(self,game=None):
         if not game:
             game = random.choice(systems.games)
@@ -41,4 +41,4 @@ class ComputerWorld(ClickWorld):
         self.build_screen()
     def action_launch(self,game):
         print("Starting game "+game.name)
-        self.manager.set_world(system_mmo.MMOWorld(self.computer,self.manager,self.engine,game))
+        self.manager.overlay_world(system_mmo.MMOWorld(self.computer,self.manager,self.engine,game))

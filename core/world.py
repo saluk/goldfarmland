@@ -77,6 +77,8 @@ class ManagerWorld(World):
             self.worlds[0].input(controller)
     def set_world(self,world):
         self.worlds = [world]
+    def overlay_world(self,world):
+        self.worlds.insert(0,world)
     def next_world(self,world):
         self.worlds.append(world)
     def end_current_world(self):

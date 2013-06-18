@@ -8,6 +8,7 @@ from .agents import Text,Agent
 from .ui import Button
 from . import systems
 from .system_computer import ComputerWorld
+from .system_apartment import ApartmentWorld
 
 import json
 
@@ -22,9 +23,11 @@ class GameWorld(ManagerWorld):
     def __init__(self,engine):
         super().__init__(engine)
         self.computer = systems.Computer(speed=10,memory=10,harddrive=10)
-        self.use_computer(self.computer)
+        self.visit_apartment()
     def use_computer(self,computer):
         self.set_world(ComputerWorld(self,self.engine,computer))
+    def visit_apartment(self):
+        self.set_world(ApartmentWorld(self.computer,self,self.engine))
 
 def make_world(engine):
     """This makes the starting world"""
