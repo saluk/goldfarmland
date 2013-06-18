@@ -23,6 +23,9 @@ class Char(Agent):
         self.surface = pygame.transform.scale(self.surface,[16,16])
     def collide(self,agent,flags=None):
         return self.rect().colliderect(agent.rect())
+    def draw(self,engine,offset):
+        super().draw(engine,offset)
+        pygame.draw.line(engine.surface,[255,0,0],[self.pos[0]-offset[0],self.pos[1]-offset[1]-3],[self.pos[0]-offset[0]+int(32*(self.hp/10.0)),self.pos[1]-offset[1]-3])
         
 class Fight(object):
     def __init__(self,partya,partyb):
@@ -101,6 +104,10 @@ class MMOWorld(ClickWorld):
         self.add_encounter(Encounter(1, [ "ghost_blue" ]))
         self.add_encounter(Encounter(2, [ "ghost_blue"  ]))
         self.add_encounter(Encounter(3, [ "ghost_blue"  ]))
+        self.next_encounter = 0
+        self.encounter_rate = 100
+        self.next_health = 0
+        self.health_rate = 50
     def add_encounter(self,encounter):
         self.add(encounter)
         self.encounters.append(encounter)
@@ -118,6 +125,18 @@ class MMOWorld(ClickWorld):
             dx,dy = m.toward(enc,self.pc)
             enc.pos[0]+=dx
             enc.pos[1]+=dy
+        self.next_encounter += 1
+        if self.next_encounter >= self.encounter_rate:
+            self.next_encounter = 0
+            self.add_encounter(Encounter(0, [ "ghost_blue" ]))
+            self.add_encounter(Encounter(1, [ "ghost_blue" ]))
+            self.add_encounter(Encounter(2, [ "ghost_blue"  ]))
+            self.add_encounter(Encounter(3, [ "ghost_blue"  ]))
+        self.next_health += 1
+        if self.next_health >= self.health_rate:
+            self.next_health = 0
+            if self.pc.hp<10:
+                self.pc.hp += 1
     def do_fights(self,fights):
         for enc in fights:
             if not enc.fight:
