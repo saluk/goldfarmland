@@ -15,8 +15,15 @@ companies = {}
 for n in COMPANY_NAMES:
     companies[n] = Company(n)
 
+class World(SystemStruct):
+    def __init__(self,name,game):
+        super().__init__(name)
+        self.game = game
+        self.game.worlds[self.name] = self
+        self.characters = {}
+        
 class Game(SystemStruct):
-    def __init__(self,name,company,speed,memory,harddrive):
+    def __init__(self,name,company,speed,memory,harddrive,worlds=WORLD_NAMES):
         super().__init__(name)
         self.company = company
         self.accounts = []   #Contains accounts that can be interacted with
@@ -25,6 +32,10 @@ class Game(SystemStruct):
         self.speed = speed
         self.memory = memory
         self.harddrive = harddrive
+        self.init_worlds(worlds)
+    def init_worlds(self,worlds):
+        for name in worlds:
+            self.worlds[name] = World(name,self)
     def make_account(self,name):
         account = Account(name,self)
         self.accounts.append(account)
@@ -52,13 +63,7 @@ class TownZone(Zone):
     def __init__(self,name,game,tileset,stores=[]):
         super().__init__(name,game,tileset)
         self.stores = stores
-
-class World(SystemStruct):
-    def __init__(self,name,game):
-        super().__init__(name)
-        self.game = game
-        self.game.worlds[self.name] = self
-        self.characters = {}
+        
     
 class Computer(SystemStruct):
     def __init__(self,speed,memory,harddrive):

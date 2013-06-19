@@ -36,6 +36,11 @@ class ComputerWorld(ClickWorld):
     def action_install(self,game=None):
         if not game:
             game = random.choice(systems.games)
+        if not self.manager.accounts_for_game(game):
+            account = game.make_account("Hurtzalot")
+            print(game.worlds)
+            game.make_character("Hurtzalot",account,list(game.worlds.keys())[0])
+            self.manager.accounts.append(account)
         result = self.computer.install_game(game)
         print(result)
         self.build_screen()

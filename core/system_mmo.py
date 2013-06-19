@@ -103,8 +103,9 @@ class MMOWorld(ClickWorld):
         self.computer = computer
         self.manager = manager
         self.game = game
+        self.account = self.manager.accounts_for_game(self.game)[0]
         self.zone = systems.Zone("Test Zone",self.game,"grass")
-        self.pc = Char("elf_archer",systems.Character("hurtzalot",1,10,1))
+        self.pc = Char("elf_archer",list(self.account.characters.values())[0])
         self.pc.pos = [5*32,4*32]
         self.encounters = []
         self.add(self.pc)
