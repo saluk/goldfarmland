@@ -32,7 +32,7 @@ class Game(SystemStruct):
         return account
     def make_character(self,name,account,world_name):
         assert account in self.accounts
-        char = Character(name,account,self.worlds[world_name])
+        char = AccountCharacter(name,account,self.worlds[world_name])
         return char
 games = []
 for n in GAME_NAMES:
@@ -91,10 +91,33 @@ class Account(SystemStruct):
         self.game = game
         self.characters = {}
         self.banned = False
-    
+        
 class Character(SystemStruct):
-    def __init__(self,name,account,world):
+    def __init__(self,name,level,maxhp,power):
         super().__init__(name)
+        self.level = level
+        self.maxhp = maxhp
+        self.power = power
+        self.reset()
+    def reset(self):
+        self.curhp = self.maxhp
+    def do_damage(self,amt):
+        print(self.curhp,amt)
+        self.curhp-=amt
+        print(self.curhp,amt)
+        if self.curhp<=0:
+            self.curhp = 0
+            return
+        return True
+    def heal(self,amt):
+        self.curhp+=amt
+        if self.curhp>self.maxhp:
+            self.curhp = self.maxhp
+            return True
+            
+class AccountCharacter(Character):
+    def __init__(self,name,account,world):
+        super().__init__(name,1,10,1)
         self.account = account
         self.account.characters[self.name] = self
         self.world = world

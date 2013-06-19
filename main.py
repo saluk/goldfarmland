@@ -1,4 +1,4 @@
-#!python3
+#! python3
 #
 #  PWBC - PyWright Base Code
 #
@@ -44,6 +44,7 @@
 #
 
 import sys,os,traceback
+
 android = None
 try:
     import android

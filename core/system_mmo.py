@@ -11,12 +11,13 @@ from .agents import Agent
 mob_defs = json.load(open("dat/mobs.json"))
 
 class Char(Agent):
-    def __init__(self,sprite_name):
+    def __init__(self,sprite_name,systemchar):
         super().__init__("art/sprites/char.png")
+        self.systemchar = systemchar
+        self.name = self.systemchar.name
         self.chars = [self]
         self.index = mob_defs["sprites"][sprite_name]["rect"]
-        self.hp = 10
-        self.power = 1      #hp per loss per attack
+        self.alive = True
     def load(self):
         super().load()
         self.subsurface(self.index)
@@ -25,7 +26,15 @@ class Char(Agent):
         return self.rect().colliderect(agent.rect())
     def draw(self,engine,offset):
         super().draw(engine,offset)
-        pygame.draw.line(engine.surface,[255,0,0],[self.pos[0]-offset[0],self.pos[1]-offset[1]-3],[self.pos[0]-offset[0]+int(32*(self.hp/10.0)),self.pos[1]-offset[1]-3])
+        health = self.systemchar.curhp/float(self.systemchar.maxhp)
+        pygame.draw.line(engine.surface,[255,0,0],[self.pos[0]-offset[0],self.pos[1]-offset[1]-3],[self.pos[0]-offset[0]+int(32*(health)),self.pos[1]-offset[1]-3])
+    def attack(self,char):
+        char.do_damage(self.systemchar.power)
+        return self.systemchar.power
+    def do_damage(self,amt):
+        self.alive = self.systemchar.do_damage(amt)
+    def heal(self,amt):
+        self.systemchar.heal(amt)
         
 class Fight(object):
     def __init__(self,partya,partyb):
@@ -47,9 +56,11 @@ class Fight(object):
         defender = self.turns[1]
         self.turns = [defender,attacker]
         for char in attacker.chars:
-            defender.chars[0].hp -= char.power
-            print(defender.chars[0].name+" takes %s"%char.power+" damage")
-            if defender.chars[0].hp<=0:
+            print(defender.chars[0].alive)
+            amt = char.attack(defender.chars[0])
+            print(defender.chars[0].name+" takes %s"%amt+" damage")
+            print(defender.chars[0].alive)
+            if not defender.chars[0].alive:
                 del defender.chars[0]
                 if not defender.chars:
                     break
@@ -71,11 +82,9 @@ class Encounter(Agent):
         self.chars = []
         x=0;y=0
         for c in chars:
-            cspr = Char(c)
+            cspr = Char(c,systems.Character("Ghost",1,1,1))
             cspr.load()
             cspr.pos = [x,y]
-            cspr.hp = 1
-            cspr.name = "Ghost"
             x+=9
             y+=2
             self.chars.append(cspr)
@@ -95,8 +104,7 @@ class MMOWorld(ClickWorld):
         self.manager = manager
         self.game = game
         self.zone = systems.Zone("Test Zone",self.game,"grass")
-        self.pc = Char("elf_archer")
-        self.pc.name = "Hurtzalot"
+        self.pc = Char("elf_archer",systems.Character("hurtzalot",1,10,1))
         self.pc.pos = [5*32,4*32]
         self.encounters = []
         self.add(self.pc)
@@ -135,8 +143,7 @@ class MMOWorld(ClickWorld):
         self.next_health += 1
         if self.next_health >= self.health_rate:
             self.next_health = 0
-            if self.pc.hp<10:
-                self.pc.hp += 1
+            self.pc.heal(1)
     def do_fights(self,fights):
         for enc in fights:
             if not enc.fight:
