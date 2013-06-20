@@ -23,7 +23,10 @@ class Char(Agent):
         self.subsurface(self.index)
         self.surface = pygame.transform.scale(self.surface,[16,16])
     def collide(self,agent,flags=None):
-        return self.rect().colliderect(agent.rect())
+        if not self.surface:
+            return
+        if m.mdist(self,agent)<32**2:
+            return True
     def draw(self,engine,offset):
         super().draw(engine,offset)
         health = self.systemchar.curhp/float(self.systemchar.maxhp)
@@ -92,7 +95,7 @@ class Encounter(Agent):
             self.rw = x+cspr.rect().width
         self.fight = None
     def rect(self):
-        return pygame.Rect([self.pos,[self.rw,self.rh]])
+        return pygame.Rect([self.pos[:],[self.rw,self.rh]])
     def draw(self,engine,offset):
         offset= [offset[0]-self.pos[0],offset[1]-self.pos[1]]
         [x.draw(engine,offset) for x in self.chars]
@@ -131,6 +134,8 @@ class MMOWorld(ClickWorld):
         return fights
     def move_encounters(self):
         for enc in self.encounters:
+            if enc.fight:
+                continue
             dx,dy = m.toward(enc,self.pc)
             enc.pos[0]+=dx
             enc.pos[1]+=dy
@@ -161,5 +166,4 @@ class MMOWorld(ClickWorld):
         fights = self.check_fights()
         if fights:
             self.do_fights(fights)
-        else:
-            self.move_encounters()
+        self.move_encounters()
