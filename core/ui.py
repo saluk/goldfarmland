@@ -109,19 +109,25 @@ class Button(Agent):
         print(id(self),"clicked")
         
 class TextButton(Button):
-    def __init__(self,box=None,graphic=None,box_color=[0,0,0],box_border=[200,200,200],caller=None,text="Button",pos=[0,0]):
+    def __init__(self,box=None,graphic=None,box_color=[0,0,0],box_border=[200,200,200],caller=None,text="Button",pos=[0,0],autosize=True):
         super().__init__(graphic,caller,pos)
         self.box = box
         self.box_color = box_color
         self.box_border = box_border
         self.text = Text()
         self.text.set_text(text)
+        self.autosize = autosize
     def draw(self,engine,offset=[0,0]):
+        if not self.text.surface:
+            self.text.render(engine)
         if self.art:
             super().draw(engine,offset)
         elif self.box:
             self.box.left = self.pos[0]-offset[0]
             self.box.top = self.pos[1]-offset[1]
+            if self.autosize:
+                self.box.width = self.text.surface.get_width()+8
+                self.box.height = self.text.surface.get_height()+6
             pygame.draw.rect(engine.surface,self.box_border,self.box)
             box2 = self.box.inflate(-2,-2)
             pygame.draw.rect(engine.surface,self.box_color,box2)
