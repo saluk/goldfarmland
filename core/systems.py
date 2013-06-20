@@ -8,6 +8,7 @@ GAME_NAMES = ["World of Wombats","Samurai Cowboy Spaceman","Elf Blood","Marital 
 COMPANY_NAMES = ["Egosoft","Snowstorm","Tony Electronics","Quick Buck Entertainment"]
 WORLD_NAMES=["Alpha","Beta","Delta","Greek Letter"]
 ACCOUNT_NAMES=["FredAstaire","GingerRogers","MrWolfe","HappyGilmore"]
+LOOT_NAMES=[("Berzerker","Weapon"),("Claw","Loot"),("Mighty Helm","Helmet")]
 
 class Company(SystemStruct):
     pass
@@ -97,12 +98,20 @@ class Account(SystemStruct):
         self.characters = {}
         self.banned = False
         
+class Item(SystemStruct):
+    def __init__(self,name,type,value):
+        super().__init__(name)
+        self.type = type
+        self.value = value
+        
 class Character(SystemStruct):
     def __init__(self,name,level,maxhp,power):
         super().__init__(name)
         self.level = level
         self.maxhp = maxhp
         self.power = power
+        self.gold = 0
+        self.loot = []
         self.reset()
     def reset(self):
         self.curhp = self.maxhp
@@ -119,6 +128,13 @@ class Character(SystemStruct):
         if self.curhp>self.maxhp:
             self.curhp = self.maxhp
             return True
+    def get_loot(self,otherchar):
+        name,type = random.choice(LOOT_NAMES)
+        loot = Item(name,type,random.randint(1,10))
+        gp = random.randint(0,10)
+        self.gold += gp
+        self.loot.append(loot)
+        return loot,gp
             
 class AccountCharacter(Character):
     def __init__(self,name,account,world):

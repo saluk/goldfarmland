@@ -38,6 +38,13 @@ class Char(Agent):
         self.alive = self.systemchar.do_damage(amt)
     def heal(self,amt):
         self.systemchar.heal(amt)
+    def get_loot(self,other):
+        return self.systemchar.get_loot(other.systemchar)
+        
+class PC(Char):
+    def get_loot(self,other):
+        loot,gp = super().get_loot(other)
+        print(self.name,"got",gp,"gold; and found a",loot.name)
         
 class Fight(object):
     def __init__(self,partya,partyb):
@@ -64,6 +71,7 @@ class Fight(object):
             print(defender.chars[0].name+" takes %s"%amt+" damage")
             print(defender.chars[0].alive)
             if not defender.chars[0].alive:
+                char.get_loot(defender.chars[0])
                 del defender.chars[0]
                 if not defender.chars:
                     break
@@ -108,7 +116,7 @@ class MMOWorld(ClickWorld):
         self.game = game
         self.account = self.manager.accounts_for_game(self.game)[0]
         self.zone = systems.Zone("Test Zone",self.game,"grass")
-        self.pc = Char("elf_archer",list(self.account.characters.values())[0])
+        self.pc = PC("elf_archer",list(self.account.characters.values())[0])
         self.pc.pos = [5*32,4*32]
         self.encounters = []
         self.add(self.pc)
