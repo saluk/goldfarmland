@@ -6,7 +6,7 @@ from . import systems
 from . import m
 from .world import World,ClickWorld
 from .ui import Button,TextButton
-from .agents import Agent
+from .agents import Agent,Text
 
 mob_defs = json.load(open("dat/mobs.json"))
 
@@ -18,6 +18,7 @@ class Char(Agent):
         self.chars = [self]
         self.index = mob_defs["sprites"][sprite_name]["rect"]
         self.alive = True
+        self.leveltext = Text()
     def load(self):
         super().load()
         self.subsurface(self.index)
@@ -31,6 +32,9 @@ class Char(Agent):
         super().draw(engine,offset)
         health = self.systemchar.curhp/float(self.systemchar.maxhp)
         pygame.draw.line(engine.surface,[255,0,0],[self.pos[0]-offset[0],self.pos[1]-offset[1]-3],[self.pos[0]-offset[0]+int(32*(health)),self.pos[1]-offset[1]-3])
+        self.leveltext.set_text("Lvl %s"%self.systemchar.level)
+        self.leveltext.pos = [self.pos[0],self.pos[1]+32]
+        self.leveltext.draw(engine,offset)
     def attack(self,char):
         char.do_damage(self.systemchar.power)
         return self.systemchar.power
@@ -40,6 +44,8 @@ class Char(Agent):
         self.systemchar.heal(amt)
     def get_loot(self,other):
         return self.systemchar.get_loot(other.systemchar)
+    def give_exp(self,amt):
+        return self.systemchar.give_exp(amt)
         
 class PC(Char):
     def get_loot(self,other):
@@ -78,6 +84,7 @@ class Fight(object):
         if not defender.chars:
             print(defender.name+" has lost")
             self.winner = attacker
+            self.winner.chars[0].give_exp(1)
         
 class Encounter(Agent):
     def __init__(self,corner,chars):
@@ -118,6 +125,7 @@ class MMOWorld(ClickWorld):
         self.zone = systems.Zone("Test Zone",self.game,"grass")
         self.pc = PC("elf_archer",list(self.account.characters.values())[0])
         self.pc.pos = [5*32,4*32]
+        self.pc.systemchar.reset()
         self.encounters = []
         self.add(self.pc)
         self.add_encounter(Encounter(0, [ "ghost_blue" ]))

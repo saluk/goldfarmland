@@ -1,4 +1,14 @@
 import random
+import csv
+
+level_values = []
+with open("dat/levels.csv","r") as csvfile:
+    levels = csv.DictReader(csvfile,delimiter='\t')
+    for row in levels:
+        level_values.append(row)
+        for k in row:
+            row[k] = int(row[k])
+print(level_values)
 
 class SystemStruct(object):
     def __init__(self,name):
@@ -112,9 +122,27 @@ class Character(SystemStruct):
         self.power = power
         self.gold = 0
         self.loot = []
+        self.exp = 0
         self.reset()
     def reset(self):
         self.curhp = self.maxhp
+    def give_exp(self,amt):
+        self.exp+=amt
+        while 1:
+            nextlevel = self.level+1
+            if len(level_values)<nextlevel:
+                print("MAX LEVEL REACHED")
+                return
+            nextlevel = level_values[nextlevel-1]
+            print(self.exp,nextlevel["exp"])
+            if self.exp<nextlevel["exp"]:
+                print("NOT ENOUGH EXP TO LEVEL")
+                return
+            self.level += 1
+            self.power = nextlevel["power"]
+            self.maxhp = nextlevel["hp"]
+            self.reset()
+            print("LEVEL UP!")
     def do_damage(self,amt):
         print(self.curhp,amt)
         self.curhp-=amt
@@ -157,5 +185,11 @@ account1 = game1.make_account("Saluk")
 account2 = game1.make_account("Xmore")
 print(account1.game.name)
 print(account1.characters)
-game1.make_character("Hurtzalot",account1,"Alpha")
+char = game1.make_character("Hurtzalot",account1,"Alpha")
 print(game1.worlds["Alpha"].characters)
+print(char.power)
+char.give_exp(9)
+assert char.power==1
+char.give_exp(1)
+assert char.power==2
+assert char.level==2
